@@ -1,14 +1,31 @@
+// controllers/itemController.ts
 import { Router, Request, Response } from "express";
-import { Item } from "../types/Item";
-import { getAllItems } from "../services/itemService";
+import { Item } from "../types/item";
+import { addItem, getAllItems } from "../services/itemService"; 
+
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", (req: Request, res: Response) => {
   try {
-    const items: Item[] = getAllItems();
+    const items = getAllItems();
     res.status(200).json(items);
   } catch (error) {
     console.error("Error fetching items:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.post("/", (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Item name is required" });
+    }
+
+    const newItem: Item = addItem(name);
+    res.status(201).json(newItem);
+  } catch (error) {
+    console.error("Error adding item:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
