@@ -1,7 +1,7 @@
 import { Router } from "express";
-import itemsController from "./controllers/itemsController";
+import itemController from "./controllers/itemController";
 const router = Router();
 
-router.use("/items", itemsController);
+router.use("/items", itemController);
 
 export default router;
